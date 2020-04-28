@@ -13,30 +13,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
     /**
      * WatchList array of stock to watch
      */
-    private String[] WatchList = new String[10];
+
+    private String[] WatchListarr = new String[10];
     YahooFinanceData Add = new YahooFinanceData();
-    Button btn = findViewById(R.id.Confirm);
-    EditText lowRange = findViewById(R.id.LowRange);
-    EditText highRange = findViewById(R.id.HighRange);
-    String stonk = findViewById(R.id.Stonk).toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final String stonk = findViewById(R.id.Stonk).toString();
+        final Button btnToWatchList = findViewById(R.id.GoToWatchList);
+        final Intent watchList = new Intent(this, WatchList.class);
+        findViewById(R.id.GoToWatchList).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(watchList);
+                watchList.putExtra("WatchListArray", WatchListarr);
+                finish();
+            }
+        });
+        findViewById(R.id.Confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WatchListarr = Add.addToList(stonk, WatchListarr);
+            }
+        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        btn.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                       WatchList = Add.addToList(stonk, WatchList);
-                                   }
-                               });
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,10 +54,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //private String[] WatchListarr = new String[10];
+    //YahooFinanceData Add = new YahooFinanceData();
+    //EditText lowRange = findViewById(R.id.LowRange);
+    //EditText highRange = findViewById(R.id.HighRange);
+    String stonk = findViewById(R.id.Stonk).toString();
+    Button btnToWatchList = findViewById(R.id.GoToWatchList);
+    Intent watchList = new Intent(this, WatchList.class);
 
-    private void Alert() {
+
+    /*protected void setBtn() {
+        Button btn = findViewById(R.id.Confirm);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WatchListarr = Add.addToList(stonk, WatchListarr);
+            }
+        });
+
 
     }
+    protected void setBtnToWatchList() {
+        btnToWatchList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(watchList);
+                watchList.putExtra("WatchListArray", WatchListarr);
+                finish();
+            }
+        });
+
+    }*/
 
 
     @Override
