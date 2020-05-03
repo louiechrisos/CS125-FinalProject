@@ -19,28 +19,36 @@ public class MainActivity extends AppCompatActivity {
      * WatchList array of stock to watch
      */
 
-    private String[] WatchListarr = new String[10];
     YahooFinanceData Add = new YahooFinanceData();
+    EditText lowRange;
+    Button btnToWatchList;
+    EditText stonk;
+    Intent watchList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final String stonk = findViewById(R.id.Stonk).toString();
-        final Button btnToWatchList = findViewById(R.id.GoToWatchList);
-        final Intent watchList = new Intent(this, WatchList.class);
-        findViewById(R.id.GoToWatchList).setOnClickListener(new View.OnClickListener() {
+        final Intent watchList = new Intent(MainActivity.this, WatchList.class);
+        EditText lowRange = findViewById(R.id.LowRange);
+        EditText highRange = findViewById(R.id.HighRange);
+        Button btnToWatchList = findViewById(R.id.GoToWatchList);
+        btnToWatchList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(watchList);
-                watchList.putExtra("WatchListArray", WatchListarr);
                 finish();
             }
         });
+
         findViewById(R.id.Confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WatchListarr = Add.addToList(stonk, WatchListarr);
+                stonk = findViewById(R.id.Stonk);
+                String stock = stonk.getText().toString();
+                watchList.putExtra("Stock", stock);
+
             }
         });
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -54,37 +62,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //private String[] WatchListarr = new String[10];
-    //YahooFinanceData Add = new YahooFinanceData();
-    //EditText lowRange = findViewById(R.id.LowRange);
-    //EditText highRange = findViewById(R.id.HighRange);
+    /*EditText lowRange = findViewById(R.id.LowRange);
+    EditText highRange = findViewById(R.id.HighRange);
     String stonk = findViewById(R.id.Stonk).toString();
     Button btnToWatchList = findViewById(R.id.GoToWatchList);
-    Intent watchList = new Intent(this, WatchList.class);
+    Intent watchList = new Intent(this, WatchList.class);*/
 
 
-    /*protected void setBtn() {
-        Button btn = findViewById(R.id.Confirm);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WatchListarr = Add.addToList(stonk, WatchListarr);
-            }
-        });
 
 
-    }
-    protected void setBtnToWatchList() {
-        btnToWatchList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(watchList);
-                watchList.putExtra("WatchListArray", WatchListarr);
-                finish();
-            }
-        });
 
-    }*/
+
 
 
     @Override
