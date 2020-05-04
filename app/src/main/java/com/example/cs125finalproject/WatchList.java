@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.TextView;
 import android.content.Intent;
+
+import java.io.IOException;
+
+import yahoofinance.YahooFinance;
 import yahoofinance.Stock;
 
 
@@ -34,6 +38,7 @@ public class WatchList extends AppCompatActivity {
     String removeStockstr;
     String Stock;
     TextView[] txtViewarr = new TextView[10];
+
 
 
 
@@ -92,7 +97,7 @@ public class WatchList extends AppCompatActivity {
     }
 
     protected void setWatchList() {
-        int length = WatchListArr.length;
+        final int length = WatchListArr.length;
         txtViewarr[0] = stock1;
         txtViewarr[1] = stock2;
         txtViewarr[2] = stock3;
@@ -103,14 +108,35 @@ public class WatchList extends AppCompatActivity {
         txtViewarr[7] = stock8;
         txtViewarr[8] = stock9;
         txtViewarr[9] = stock10;
-        for (int i = 0; i < length; i++) {
-            if (WatchListArr[i] == null) {
-                txtViewarr[i].setText("empty");
-            } else if (WatchListArr[i] != null) {
-                txtViewarr[i].setText(WatchListArr[i]);
+
+
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    for (int i = 0; i < length; i++) {
+                        if (WatchListArr[i] == null) {
+                            txtViewarr[i].setText("empty");
+                        } else if (WatchListArr[i] != null) {
+                            Stock stock = YahooFinance.get(WatchListArr[i]);
+                            String info = WatchListArr[i] + stock.getQuote().getPrice();
+                            txtViewarr[i].setText(info);
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
+        thread.run();
     }
+
+
+
+
+
+
+
     protected void removeFromWatchList() {
         for (int i = 0; i < txtViewarr.length; i++) {
             if (txtViewarr[i].getText().toString().equals(removeStockstr)) {
@@ -119,6 +145,7 @@ public class WatchList extends AppCompatActivity {
         }
 
     }
+
 
 
 
