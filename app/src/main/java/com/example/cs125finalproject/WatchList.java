@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.content.Intent;
 import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+
+import java.io.IOException;
+import java.math.BigDecimal;
 
 
 public class WatchList extends AppCompatActivity {
@@ -103,11 +107,13 @@ public class WatchList extends AppCompatActivity {
         txtViewarr[7] = stock8;
         txtViewarr[8] = stock9;
         txtViewarr[9] = stock10;
+        String setPrice = getStockPrice().toString();
         for (int i = 0; i < length; i++) {
             if (WatchListArr[i] == null) {
                 txtViewarr[i].setText("empty");
             } else if (WatchListArr[i] != null) {
-                txtViewarr[i].setText(WatchListArr[i]);
+                String toSetText = WatchListArr[i] + setPrice;
+                txtViewarr[i].setText(toSetText);
             }
         }
     }
@@ -118,6 +124,17 @@ public class WatchList extends AppCompatActivity {
             }
         }
 
+    }
+    protected BigDecimal getStockPrice() {
+        Stock currentStock;
+        try {
+            currentStock = YahooFinance.get(Stock);
+            BigDecimal price = currentStock.getQuote().getPrice();
+            return price;
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
