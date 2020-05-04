@@ -22,18 +22,21 @@ public class MainActivity extends AppCompatActivity {
     private String[] WatchListarr = new String[10];
     YahooFinanceData Add = new YahooFinanceData();
 
+    private EditText highRange;
+    private EditText lowRange;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final String stonk = findViewById(R.id.Stonk).toString();
         final Button btnToWatchList = findViewById(R.id.GoToWatchList);
-        final Intent watchList = new Intent(this, WatchList.class);
         findViewById(R.id.GoToWatchList).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(watchList);
+                Intent watchList = new Intent(MainActivity.this, WatchList.class);
                 watchList.putExtra("WatchListArray", WatchListarr);
+                startActivity(watchList);
                 finish();
             }
         });
@@ -53,14 +56,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        lowRange = findViewById(R.id.LowRange);
+        highRange = findViewById(R.id.HighRange);
     }
     //private String[] WatchListarr = new String[10];
     //YahooFinanceData Add = new YahooFinanceData();
-    //EditText lowRange = findViewById(R.id.LowRange);
-    //EditText highRange = findViewById(R.id.HighRange);
-    String stonk = findViewById(R.id.Stonk).toString();
-    Button btnToWatchList = findViewById(R.id.GoToWatchList);
-    Intent watchList = new Intent(this, WatchList.class);
+    //
+
 
 
     /*protected void setBtn() {

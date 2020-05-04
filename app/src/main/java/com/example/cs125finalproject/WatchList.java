@@ -16,20 +16,9 @@ import yahoofinance.Stock;
 
 
 public class WatchList extends AppCompatActivity {
-    TextView stock1 = findViewById(R.id.textView19);
-    TextView stock2 = findViewById(R.id.textView18);
-    TextView stock3 = findViewById(R.id.textView17);
-    TextView stock4 = findViewById(R.id.textView16);
-    TextView stock5 = findViewById(R.id.textView15);
-    TextView stock6 = findViewById(R.id.textView14);
-    TextView stock7 = findViewById(R.id.textView13);
-    TextView stock8 = findViewById(R.id.textView12);
-    TextView stock9 = findViewById(R.id.textView11);
-    TextView stock10 = findViewById(R.id.textView17);
-    TextView removeStock = findViewById(R.id.textView21);
     Button backBtn = findViewById(R.id.Back);
     Button removeBtn = findViewById(R.id.remove);
-    Intent mainActivityIntent = getIntent();
+
     String[] WatchListArr = new String[10];
     YahooFinanceData YahooFinanceData = new YahooFinanceData();
     String removeStockstr = removeStock.getText().toString();
@@ -42,6 +31,7 @@ public class WatchList extends AppCompatActivity {
         setContentView(R.layout.activity_watch_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent mainActivityIntent = getIntent();
         WatchListArr = mainActivityIntent.getStringArrayExtra("WatchListArray");
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +41,17 @@ public class WatchList extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        TextView stock1 = findViewById(R.id.textView19);
+        TextView stock2 = findViewById(R.id.textView18);
+        TextView stock3 = findViewById(R.id.textView17);
+        TextView stock4 = findViewById(R.id.textView16);
+        TextView stock5 = findViewById(R.id.textView15);
+        TextView stock6 = findViewById(R.id.textView14);
+        TextView stock7 = findViewById(R.id.textView13);
+        TextView stock8 = findViewById(R.id.textView12);
+        TextView stock9 = findViewById(R.id.textView11);
+        TextView stock10 = findViewById(R.id.textView17);
+        TextView removeStock = findViewById(R.id.textView21);
     }
 
         protected void setWatchList() {
