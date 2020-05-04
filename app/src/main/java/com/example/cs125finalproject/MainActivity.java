@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
 import android.widget.TextView;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText lowRange;
     Button btnToWatchList;
     EditText stonk;
+    ArrayList<String> WatchListArr = new ArrayList<>();
 
 
 
@@ -49,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 stonk = findViewById(R.id.Stonk);
                 String stock = stonk.getText().toString();
+                WatchListArr.add(stock);
                 watchList.putExtra("Stock", stock);
+                watchList.putStringArrayListExtra("WatchListArr", WatchListArr);
+
+
 
             }
         });

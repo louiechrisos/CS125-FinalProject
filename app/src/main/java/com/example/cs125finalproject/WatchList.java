@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.content.Intent;
 import java.math.BigDecimal;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import yahoofinance.YahooFinance;
 import yahoofinance.Stock;
@@ -34,7 +35,7 @@ public class WatchList extends AppCompatActivity {
     private TextView removeStock;
     Button backBtn;
     Button removeBtn;
-    String[] WatchListArr = new String[10];
+    ArrayList<String> WatchListArr = new ArrayList<>();
     YahooFinanceData YahooFinanceData = new YahooFinanceData();
     String removeStockstr;
     String Stock;
@@ -44,10 +45,11 @@ public class WatchList extends AppCompatActivity {
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
-        outState.putStringArray("WatchListArr", WatchListArr);
-
-
         super.onSaveInstanceState(outState);
+        outState.putStringArrayList("WatchListArr", WatchListArr);
+
+
+
 
     }
     @Override
@@ -55,10 +57,7 @@ public class WatchList extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         // Restore UI state from the savedInstanceState.
         // This bundle has also been passed to onCreate.
-        WatchListArr = savedInstanceState.getStringArray("WatchListArr");
-        for (int i = 0; i < WatchListArr.length; i++) {
-            txtViewarr[i].setText(WatchListArr[i]);
-        }
+        WatchListArr = savedInstanceState.getStringArrayList("WatchListArr");
 
 
     }
@@ -76,6 +75,7 @@ public class WatchList extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         Intent mainActivityIntent = getIntent();
         Stock = mainActivityIntent.getStringExtra("Stock");
+        WatchListArr = mainActivityIntent.getStringArrayListExtra("WatchListArr");
         stock1 = findViewById(R.id.textView19);
         stock2 = findViewById(R.id.textView18);
         stock3 = findViewById(R.id.textView17);
@@ -105,8 +105,8 @@ public class WatchList extends AppCompatActivity {
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YahooFinanceData.removeFromList(removeStockstr, WatchListArr);
-                //removeFromWatchList();
+                /*YahooFinanceData.removeFromList(removeStockstr, WatchListArr);
+                //removeFromWatchList();*/
                 finish();
 
 
@@ -132,24 +132,27 @@ public class WatchList extends AppCompatActivity {
 
     protected void setWatchList() {
 
-        for (int i = 0; i < WatchListArr.length; i++) {
+        /*for (int i = 0; i < WatchListArr.length; i++) {
             if (WatchListArr[i] == null) {
                 WatchListArr[i] = Stock;
-                txtViewarr[i].setText(WatchListArr[i]);
                 break;
             }
+        }*/
+        for (int i = 0; i < WatchListArr.size(); i++) {
+            txtViewarr[i].setFreezesText(true);
+            txtViewarr[i].setText(WatchListArr.get(i));
         }
-    }
-       /* txtViewarr[0].setText(WatchListArr[0]);
-        txtViewarr[1].setText(WatchListArr[1]);
-        txtViewarr[2].setText(WatchListArr[2]);
-        txtViewarr[3].setText(WatchListArr[3]);
-        txtViewarr[4].setText(WatchListArr[4]);
-        txtViewarr[5].setText(WatchListArr[5]);
-        txtViewarr[6].setText(WatchListArr[6]);
-        txtViewarr[7].setText(WatchListArr[7]);
-        txtViewarr[8].setText(WatchListArr[8]);
-        txtViewarr[9].setText(WatchListArr[9]);
+
+//        txtViewarr[0].setText(WatchListArr[0]);
+//        txtViewarr[1].setText(WatchListArr[1]);
+//        txtViewarr[2].setText(WatchListArr[2]);
+//        txtViewarr[3].setText(WatchListArr[3]);
+//        txtViewarr[4].setText(WatchListArr[4]);
+//        txtViewarr[5].setText(WatchListArr[5]);
+//        txtViewarr[6].setText(WatchListArr[6]);
+//        txtViewarr[7].setText(WatchListArr[7]);
+//        txtViewarr[8].setText(WatchListArr[8]);
+//        txtViewarr[9].setText(WatchListArr[9]);
 
 
 
