@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
+import android.widget.TextView;
+
 public class MainActivity extends AppCompatActivity {
     /**
      * WatchList array of stock to watch
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     EditText lowRange;
     Button btnToWatchList;
     EditText stonk;
-    Intent watchList;
+
 
 
     @Override
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
     /*EditText lowRange = findViewById(R.id.LowRange);
     EditText highRange = findViewById(R.id.HighRange);
     String stonk = findViewById(R.id.Stonk).toString();

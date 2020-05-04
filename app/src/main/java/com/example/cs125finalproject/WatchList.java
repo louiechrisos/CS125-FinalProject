@@ -12,11 +12,12 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.TextView;
 import android.content.Intent;
-
+import java.math.BigDecimal;
 import java.io.IOException;
 
 import yahoofinance.YahooFinance;
 import yahoofinance.Stock;
+import android.os.StrictMode;
 
 
 public class WatchList extends AppCompatActivity {
@@ -38,7 +39,29 @@ public class WatchList extends AppCompatActivity {
     String removeStockstr;
     String Stock;
     TextView[] txtViewarr = new TextView[10];
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        outState.putStringArray("WatchListArr", WatchListArr);
 
+
+        super.onSaveInstanceState(outState);
+
+    }
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        WatchListArr = savedInstanceState.getStringArray("WatchListArr");
+        for (int i = 0; i < WatchListArr.length; i++) {
+            txtViewarr[i].setText(WatchListArr[i]);
+        }
+
+
+    }
 
 
 
@@ -49,6 +72,8 @@ public class WatchList extends AppCompatActivity {
         setContentView(R.layout.activity_watch_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         Intent mainActivityIntent = getIntent();
         Stock = mainActivityIntent.getStringExtra("Stock");
         stock1 = findViewById(R.id.textView19);
@@ -64,15 +89,25 @@ public class WatchList extends AppCompatActivity {
         removeStock = findViewById(R.id.editText);
         backBtn = findViewById(R.id.Back);
         removeBtn = findViewById(R.id.remove);
-        YahooFinanceData.addToList(Stock, WatchListArr);
         removeStockstr = removeStock.getText().toString();
+        txtViewarr[0] = stock1;
+        txtViewarr[1] = stock2;
+        txtViewarr[2] = stock3;
+        txtViewarr[3] = stock4;
+        txtViewarr[4] = stock5;
+        txtViewarr[5] = stock6;
+        txtViewarr[6] = stock7;
+        txtViewarr[7] = stock8;
+        txtViewarr[8] = stock9;
+        txtViewarr[9] = stock10;
         setWatchList();
 
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 YahooFinanceData.removeFromList(removeStockstr, WatchListArr);
-                removeFromWatchList();
+                //removeFromWatchList();
+                finish();
 
 
             }
@@ -82,8 +117,6 @@ public class WatchList extends AppCompatActivity {
             public void onClick(View v) {
                 Intent back = new Intent(WatchList.this, MainActivity.class);
                 startActivity(back);
-                back.putExtra("WatchListArr", WatchListArr);
-                finish();
             }
         });
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -96,42 +129,60 @@ public class WatchList extends AppCompatActivity {
         });
     }
 
+
     protected void setWatchList() {
-        final int length = WatchListArr.length;
-        txtViewarr[0] = stock1;
-        txtViewarr[1] = stock2;
-        txtViewarr[2] = stock3;
-        txtViewarr[3] = stock4;
-        txtViewarr[4] = stock5;
-        txtViewarr[5] = stock6;
-        txtViewarr[6] = stock7;
-        txtViewarr[7] = stock8;
-        txtViewarr[8] = stock9;
-        txtViewarr[9] = stock10;
+
+        for (int i = 0; i < WatchListArr.length; i++) {
+            if (WatchListArr[i] == null) {
+                WatchListArr[i] = Stock;
+                txtViewarr[i].setText(WatchListArr[i]);
+                break;
+            }
+        }
+    }
+       /* txtViewarr[0].setText(WatchListArr[0]);
+        txtViewarr[1].setText(WatchListArr[1]);
+        txtViewarr[2].setText(WatchListArr[2]);
+        txtViewarr[3].setText(WatchListArr[3]);
+        txtViewarr[4].setText(WatchListArr[4]);
+        txtViewarr[5].setText(WatchListArr[5]);
+        txtViewarr[6].setText(WatchListArr[6]);
+        txtViewarr[7].setText(WatchListArr[7]);
+        txtViewarr[8].setText(WatchListArr[8]);
+        txtViewarr[9].setText(WatchListArr[9]);
 
 
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    for (int i = 0; i < length; i++) {
-                        if (WatchListArr[i] == null) {
-                            txtViewarr[i].setText("empty");
-                        } else if (WatchListArr[i] != null) {
-                            Stock stock = YahooFinance.get(WatchListArr[i]);
-                            String info = WatchListArr[i] + stock.getQuote().getPrice();
-                            txtViewarr[i].setText(info);
 
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+    }
+        /*YahooFinanceData.addToList(Stock, WatchListArr);
+        for (int i = 0; i < WatchListArr.length; i++) {
+            if (WatchListArr[i] == null) {
+                txtViewarr[i].setText("Empty");
+            } else {
+                String setPrice = getStockPrice();
+                String setText = "TICKER: " + WatchListArr[i] + " " + "PRICE: " + setPrice;
+                txtViewarr[i].setText(setText);
+            }
+        }
+    }
+        /*if (WatchListArr != null) {
+            final int length = WatchListArr.length;
+            String setPrice = getStockPrice();
+            for (int i = 0; i < length; i++) {
+                if (WatchListArr[i] != null) {
+                    String setText = "TICKER: " + WatchListArr[i] + " " + "PRICE: " + setPrice;
+                    txtViewarr[i].setFreezesText(true);
+                    txtViewarr[i].setText(setText);
+                }
+                if (WatchListArr[i] == null) {
+                    WatchListArr[i] = Stock;
+
+                    txtViewarr[i].setFreezesText(true);
+                    txtViewarr[i].setText(setText);
+                    break;
                 }
             }
-        });
-        thread.run();
-    }
-
-
+        }*/
 
 
 
@@ -146,8 +197,16 @@ public class WatchList extends AppCompatActivity {
 
     }
 
-
-
+    protected String getStockPrice() {
+        try {
+            Stock stock = YahooFinance.get(Stock);
+            String price = stock.getQuote(true).getPrice().toString();
+            return price;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Invalid Ticker";
+    }
 
 }
 
