@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.ListView;
 import android.content.Intent;
 import java.math.BigDecimal;
 import java.io.IOException;
@@ -39,28 +40,8 @@ public class WatchList extends AppCompatActivity {
     YahooFinanceData YahooFinanceData = new YahooFinanceData();
     String removeStockstr;
     String Stock;
+
     TextView[] txtViewarr = new TextView[10];
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        super.onSaveInstanceState(outState);
-        outState.putStringArrayList("WatchListArr", WatchListArr);
-
-
-
-
-    }
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        WatchListArr = savedInstanceState.getStringArrayList("WatchListArr");
-
-
-    }
 
 
 
@@ -116,6 +97,7 @@ public class WatchList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent back = new Intent(WatchList.this, MainActivity.class);
+
                 startActivity(back);
             }
         });
@@ -128,6 +110,8 @@ public class WatchList extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     protected void setWatchList() {

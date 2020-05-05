@@ -38,27 +38,25 @@ public class MainActivity extends AppCompatActivity {
         EditText lowRange = findViewById(R.id.LowRange);
         EditText highRange = findViewById(R.id.HighRange);
         Button btnToWatchList = findViewById(R.id.GoToWatchList);
+        stonk = findViewById(R.id.Stonk);
+
+        findViewById(R.id.Confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String stock = stonk.getText().toString();
+                WatchListArr.add(stock);
+            }
+        });
         btnToWatchList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                watchList.putStringArrayListExtra("WatchListArr", WatchListArr);
+                watchList.putExtra("Stock", stonk.getText().toString());
                 startActivity(watchList);
                 finish();
             }
         });
 
-        findViewById(R.id.Confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stonk = findViewById(R.id.Stonk);
-                String stock = stonk.getText().toString();
-                WatchListArr.add(stock);
-                watchList.putExtra("Stock", stock);
-                watchList.putStringArrayListExtra("WatchListArr", WatchListArr);
-
-
-
-            }
-        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -69,6 +67,27 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("WatchListArr", WatchListArr);
+
+
+
+
+    }
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        WatchListArr = savedInstanceState.getStringArrayList("WatchListArr");
+
+
     }
 
 
