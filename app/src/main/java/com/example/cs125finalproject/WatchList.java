@@ -1,5 +1,6 @@
 package com.example.cs125finalproject;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,10 +41,12 @@ public class WatchList extends AppCompatActivity {
     YahooFinanceData YahooFinanceData = new YahooFinanceData();
     String removeStockstr;
     String Stock;
+    String lowRange;
+    String highRange;
+    int high;
+    int low;
 
     TextView[] txtViewarr = new TextView[10];
-
-
 
 
     @Override
@@ -57,6 +60,8 @@ public class WatchList extends AppCompatActivity {
         Intent mainActivityIntent = getIntent();
         Stock = mainActivityIntent.getStringExtra("Stock");
         WatchListArr = mainActivityIntent.getStringArrayListExtra("WatchListArr");
+        highRange = mainActivityIntent.getStringExtra("high");
+        lowRange = mainActivityIntent.getStringExtra("low");
         stock1 = findViewById(R.id.textView19);
         stock2 = findViewById(R.id.textView18);
         stock3 = findViewById(R.id.textView17);
@@ -112,67 +117,28 @@ public class WatchList extends AppCompatActivity {
     }
 
 
-
-
     protected void setWatchList() {
-
-        /*for (int i = 0; i < WatchListArr.length; i++) {
-            if (WatchListArr[i] == null) {
-                WatchListArr[i] = Stock;
-                break;
-            }
-        }*/
+        String price;
         for (int i = 0; i < WatchListArr.size(); i++) {
-            txtViewarr[i].setFreezesText(true);
-            txtViewarr[i].setText(WatchListArr.get(i));
-        }
-
-//        txtViewarr[0].setText(WatchListArr[0]);
-//        txtViewarr[1].setText(WatchListArr[1]);
-//        txtViewarr[2].setText(WatchListArr[2]);
-//        txtViewarr[3].setText(WatchListArr[3]);
-//        txtViewarr[4].setText(WatchListArr[4]);
-//        txtViewarr[5].setText(WatchListArr[5]);
-//        txtViewarr[6].setText(WatchListArr[6]);
-//        txtViewarr[7].setText(WatchListArr[7]);
-//        txtViewarr[8].setText(WatchListArr[8]);
-//        txtViewarr[9].setText(WatchListArr[9]);
+            try {
 
 
-
-    }
-        /*YahooFinanceData.addToList(Stock, WatchListArr);
-        for (int i = 0; i < WatchListArr.length; i++) {
-            if (WatchListArr[i] == null) {
-                txtViewarr[i].setText("Empty");
-            } else {
-                String setPrice = getStockPrice();
-                String setText = "TICKER: " + WatchListArr[i] + " " + "PRICE: " + setPrice;
+                Stock stock = YahooFinance.get(WatchListArr.get(i));
+                price = stock.getQuote(true).getPrice().toString();
+//
+                String setText = "TICKER: " + WatchListArr.get(i) + " " + "PRICE: " + price + " YOUR RANGE IS: " + lowRange + " - " + highRange;
                 txtViewarr[i].setText(setText);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                String bad = "Invalid Ticker";
+                txtViewarr[i].setText(bad);
             }
         }
+
+
     }
-        /*if (WatchListArr != null) {
-            final int length = WatchListArr.length;
-            String setPrice = getStockPrice();
-            for (int i = 0; i < length; i++) {
-                if (WatchListArr[i] != null) {
-                    String setText = "TICKER: " + WatchListArr[i] + " " + "PRICE: " + setPrice;
-                    txtViewarr[i].setFreezesText(true);
-                    txtViewarr[i].setText(setText);
-                }
-                if (WatchListArr[i] == null) {
-                    WatchListArr[i] = Stock;
-
-                    txtViewarr[i].setFreezesText(true);
-                    txtViewarr[i].setText(setText);
-                    break;
-                }
-            }
-        }*/
-
-
-
 
 
     protected void removeFromWatchList() {
@@ -183,19 +149,9 @@ public class WatchList extends AppCompatActivity {
         }
 
     }
-
-    protected String getStockPrice() {
-        try {
-            Stock stock = YahooFinance.get(Stock);
-            String price = stock.getQuote(true).getPrice().toString();
-            return price;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Invalid Ticker";
-    }
-
 }
+
+
 
 
 

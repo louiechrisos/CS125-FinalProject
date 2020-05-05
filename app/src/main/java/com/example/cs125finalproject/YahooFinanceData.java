@@ -34,11 +34,22 @@ public class YahooFinanceData {
         return arr;
     }
 
-    public boolean isPriceWithinRange(Stock ticker, BigDecimal low, BigDecimal high) {
-        BigDecimal currentPrice = ticker.getQuote().getPrice();
-        if (currentPrice.compareTo(low) < 0 || currentPrice.compareTo(high) > 0) {
-            return false;
-        } else return true;
+    /** if 0 is returned, then the price IS within the lowRange and highRange
+     * if 1 is returned, then the price IS higher than highRange
+     * if -1 is returned, then the price IS lower thant lowRange
+     * @param ticker
+     * @param low
+     * @param high
+     * @return
+     */
+    public boolean isPriceWithinRange(Stock ticker, double low, double high) {
+            BigDecimal currentPrice = ticker.getQuote().getPrice();
+            double price = currentPrice.doubleValue();
+            if (price > low || price < high) {
+                return true;
+            }
+        return false;
+
     }
 }
 

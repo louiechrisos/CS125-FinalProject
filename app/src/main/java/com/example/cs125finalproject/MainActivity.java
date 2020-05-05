@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     YahooFinanceData Add = new YahooFinanceData();
     EditText lowRange;
+    EditText highRange;
     Button btnToWatchList;
     EditText stonk;
     ArrayList<String> WatchListArr = new ArrayList<>();
@@ -35,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Intent watchList = new Intent(MainActivity.this, WatchList.class);
-        EditText lowRange = findViewById(R.id.LowRange);
-        EditText highRange = findViewById(R.id.HighRange);
+        lowRange = findViewById(R.id.LowRange);
+        highRange = findViewById(R.id.HighRange);
         Button btnToWatchList = findViewById(R.id.GoToWatchList);
         stonk = findViewById(R.id.Stonk);
 
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 watchList.putStringArrayListExtra("WatchListArr", WatchListArr);
                 watchList.putExtra("Stock", stonk.getText().toString());
+                watchList.putExtra("low", (lowRange.getText().toString()));
+                watchList.putExtra("high", (highRange.getText().toString()));
                 startActivity(watchList);
                 finish();
             }
@@ -125,5 +128,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+    public static Integer toInteger(Object value) {
+        if (value instanceof Integer) {
+            return (Integer) value;
+        } else if (value instanceof Number) {
+            return ((Number) value).intValue();
+        } else if (value instanceof String) {
+            try {
+                return (int) Double.parseDouble((String) value);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return null;
     }
 }
